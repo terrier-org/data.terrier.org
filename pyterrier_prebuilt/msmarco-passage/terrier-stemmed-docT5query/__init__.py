@@ -16,7 +16,7 @@ def index(dest_dir):
                     for l in fh:
                         obj = json.loads(l)
                         obj['docno'] = obj.pop('id')
-                        obj['test'] = obj.pop('contents')
+                        obj['text'] = obj.pop('contents')
                         yield obj                    
                     
     init_args = INDEXER_KWARGS.copy()
