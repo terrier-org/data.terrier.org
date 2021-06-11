@@ -7,7 +7,7 @@ MD5 = "md5" if sys.platform == 'darwin' else "md5sum"
 def calc_md5s(dest_dir : str):
     os.system("cd %s; %s * > md5sums" % (dest_dir, MD5) )
 
-def run_index(dataset : str, variant : str, target_dir : str):
+def run_index(dataset : str, variant : str, target_dir : str, date : str):
     import pyterrier_prebuilt
     module_name = "pyterrier_prebuilt.%s.%s" % (dataset, variant)
     kwargs={}
@@ -20,7 +20,7 @@ def run_index(dataset : str, variant : str, target_dir : str):
     function_name = 'index'
     
     index_fn = getattr(module, function_name)
-    dest_dir = os.path.join(target_dir, dataset, variant)
+    dest_dir = os.path.join(target_dir, dataset, variant, date)
     index_fn(dest_dir, **kwargs)
     calc_md5s(dest_dir)
 
@@ -33,7 +33,10 @@ if __name__ == '__main__':
     args = sys.argv
     if len(args) != 4:
         usage(args[0])
+        sys.exit(1)
     else:
+        from datetime import datetime
+        date = datetime.today().strftime('%Y-%m-%d')
         import pyterrier as pt
         pt.init()
-        run_index(args[1], args[2], args[3])
+        run_index(args[1], args[2], args[3], date)
