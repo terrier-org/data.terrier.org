@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+{% block body %}
+
+<section class="blog-list px-3 py-5 p-md-5">
+    <div class="container">
+        {% for dataset in datasets %}
+        <div class="item mb-5">
+            <div class="media">
+                <div class="media-body">
+                    <h3 class="title mb-1"><a href="{{dataset.name}}.dataset.html">{{dataset.friendlyname}}</a></h3>
+                    <div class="meta mb-1"><span class="date">Last Update {{dataset.lastupdate}}</span><span class="comment">{{dataset.variant_count}} index variants</a></span></div>
+                    <div class="intro">{{dataset.desc}}</div>
+                    <a class="more-link" href="{{dataset.name}}.dataset.html">More details &rarr;</a>
+                </div><!--//media-body-->
+            </div><!--//media-->
+        </div><!--//item-->
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

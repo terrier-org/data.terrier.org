@@ -1,0 +1,37 @@
+{% extends "_base.html" %}
+{% block body %}
+
+
+<article class="about-section py-5">
+    <div class="container">
+        <h2 class="title mb-3">{{dataset.friendlyname}}</h2>
+        <p>{{dataset.desc}}</p>
+
+        <p>Retrieval notebooks: <a href="/indices/{{dataset.name}}/retrieval.html">View</a>, <a href="/indices/{{dataset.name}}/retrieval.ipbynb">Download</a></p>
+
+        <h3>Variants</h3>
+        <p>We have {{dataset.variant_count}} variants for this dataset.</p>
+        <p></p>
+
+        {% for variant in dataset.variants %}
+        <div class="item mb-5">
+            <div class="media">
+                <div class="media-body">
+            <h4>{{variant.name}}</h4>
+            <p>{{variant.desc}}</p>
+            <p><a href="indices/{{dataset.name}}/{{variant.name}}/latest/">Browse index</a></p>
+            <p>Last updated: {{variant.lastupdate}}</p>
+
+            <pre style="{border-style: solid;}">
+    dph = pt.BatchRetrieve.from_dataset('{{dataset.name}}', variant='{{variant.name}}', wmodel='DPH')
+    bm25 = pt.BatchRetrieve.from_dataset('{{dataset.name}}', variant='{{variant.name}}', wmodel='BM25')
+            </pre>
+                </div><!--//media-body-->
+            </div><!--//media-->
+        </div><!--//item-->
+        {% endfor %}
+
+
+    </div>
+</article><!--//about-section-->
+{% endblock %}
