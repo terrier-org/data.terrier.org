@@ -18,9 +18,9 @@
             <div class="media">
                 <div class="media-body">
             <h4>{{variant.name}}</h4>
+            <div class="meta mb-1"><span class="date">Last Update {{variant.lastupdate}}</span></div>
             <p>{{variant.desc}}</p>
             <p><a href="indices/{{dataset.name}}/{{variant.name}}/latest/">Browse index</a></p>
-            <p>Last updated: {{variant.lastupdate}}</p>
 
             <pre style="{border-style: solid;}">
     dph = pt.BatchRetrieve.from_dataset('{{dataset.name}}', variant='{{variant.name}}', wmodel='DPH')
