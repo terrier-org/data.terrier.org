@@ -1,6 +1,6 @@
 
 
-DIR="/local/terrier/Resources/msmarco/deepct/"
+DIR="/local/terrier/Resources/msmarco/docT5query/msmarco-passages/msmarco-passage-expanded"
 INDEXER_KWARGS={'overwrite' : True}
 MAX_DOCNOLEN = 10
 
@@ -9,12 +9,15 @@ def index(dest_dir):
     
     def corpus_iter():
         import json
-        files = [ DIR + "collection_pred_%d/deepctcollection.gz" for d in [1,2] ]
+        files = pt.io.find_files(DIR)
         for fname in files:
-                with pt.io.autoopen(fname) as fh:
+            if fname.startswith("docs") and fname.endswith(".json.gz"):
+                with pt.io.autoopen(fname, 'rt') as fh:
                     for l in fh:
-                        docno, text = l.split("\t")
-                        yield {"docno" : docno, "text" : text}
+                        obj = json.loads(l)
+                        obj['docno'] = obj.pop('id')
+                        obj['text'] = obj.pop('contents')
+                        yield obj                    
                     
     init_args = INDEXER_KWARGS.copy()
     index_args = {}

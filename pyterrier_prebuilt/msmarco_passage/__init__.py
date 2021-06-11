@@ -6,7 +6,7 @@ MAX_TEXT = 4096
 
 def index(dest_dir, variant='terrier-stemmed'):
     import pyterrier as pt
-    dataset = pt.get_dataset("trec-deep-learning-passages").get_corpus_iter()
+    dataset = pt.get_dataset('irds:msmarco-passage').get_corpus_iter()
 
     init_args = INDEXER_KWARGS.copy()
     index_args = {}
