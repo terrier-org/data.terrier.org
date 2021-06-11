@@ -51,8 +51,9 @@ def usage(name):
 if __name__ == '__main__':
     import sys
     args = sys.argv
-    if len(args) != 4:
+    if len(args) < 4:
         usage(args[0])
+        sys.exit(1)
     else:
         builddir=args[1]
         dataset=args[2]
