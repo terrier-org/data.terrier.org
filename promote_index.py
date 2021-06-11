@@ -9,7 +9,10 @@ def promote(dataset : str, date : str, builddir : str):
         symlink = os.path.join(datasetdir, variant, "latest")
         if os.path.exists(symlink):
             os.remove(symlink)
-        os.symlink(variant_dated_dir, symlink)
+        import os
+        fd  = os.open( os.path.join(datasetdir, variant), os.O_RDONLY )
+        os.symlink(date, "latest", dir_fd=fd)
+        os.close(fd)
         print("Promoting %s to be latest"  % variant_dated_dir)
 
 def usage(name):
