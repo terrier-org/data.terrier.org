@@ -11,7 +11,7 @@ def index(dest_dir):
         import json
         files = pt.io.find_files(DIR)
         for fname in files:
-            if fname.startswith("docs") and fname.endswith(".json.gz"):
+            if "/docs" in fname and fname.endswith(".json.gz"):
                 with pt.io.autoopen(fname, 'rt') as fh:
                     for l in fh:
                         obj = json.loads(l)
