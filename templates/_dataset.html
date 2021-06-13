@@ -1,6 +1,17 @@
 {% extends "_base.html" %}
 {% block body %}
 
+<style>
+    code.python {
+        border-style: solid;
+        border-width: thin;
+        display: block;
+        white-space: pre-wrap;
+        background-color: rgba(202, 202, 202, 0.288);
+        border-color: black;
+    }
+
+</style>
 
 <article class="about-section py-5">
     <div class="container">
@@ -22,10 +33,11 @@
             <p>{{variant.desc}}</p>
             <p><a href="indices/{{dataset.name}}/{{variant.name}}/latest/">Browse index</a></p>
 
-            <pre style="{border-style: solid;}">
+            <p>Use this for retrieval in PyTerrier:</p>
+            <code class='python copy-snippet'>
     dph = pt.BatchRetrieve.from_dataset('{{dataset.name}}', variant='{{variant.name}}', wmodel='DPH')
     bm25 = pt.BatchRetrieve.from_dataset('{{dataset.name}}', variant='{{variant.name}}', wmodel='BM25')
-            </pre>
+            </code>
                 </div><!--//media-body-->
             </div><!--//media-->
         </div><!--//item-->
