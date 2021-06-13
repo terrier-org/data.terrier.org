@@ -1,6 +1,14 @@
 {% extends "_base.html" %}
 {% block body %}
 
+<article class="about-section py-5">
+    <div class="container">
+        <h2 class="title mb-3">About This Site</h2>
+        
+        <p>This site is a repository of indices for PyTerrier and Terrier.</p>
+    </div>
+</article>
+
 <section class="blog-list px-3 py-5 p-md-5">
     <div class="container">
         {% for dataset in datasets %}
