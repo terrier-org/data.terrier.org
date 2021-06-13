@@ -71,10 +71,36 @@ if __name__ == "__main__":
 
 			{
 				"friendlyname" : "MSMARCO Document Ranking",
-				"name" : "msmarco_docs",
+				"name" : "msmarco_document",
 				"desc" : "A document ranking corpus containing 3.2 million documents. Also used by the TREC Deep Learning track.",
 				"lastupdate" : "unknown",
-				"variants" : []
+				"variants" : [
+					{
+						"name" : "terrier_stemmed",
+						"desc" : "Terrier's default Porter stemming, and stopwords removed",
+						"lastupdate" : "today!",
+					},
+					{
+						"name" : "terrier_stemmed_text",
+						"desc" : "Terrier's default Porter stemming, and stopwords removed. Text is also saved in the MetaIndex to facilitate BERT-based reranking.",
+						"lastupdate" : "today!",
+					},
+					{
+						"name" : "terrier_unstemmed",
+						"desc" : "Terrier index, no stemming, no stopword removal",
+						"lastupdate" : "today!",
+					},
+					{
+						"name" : "terrier_unstemmed_text",
+						"desc" : "Terrier index, no stemming, no stopword removal. Text is also saved in the MetaIndex to facilitate BERT-based reranking.",
+						"lastupdate" : "today!",
+					},
+					{
+						"name" : "terrier_stemmed_docT5query",
+						"desc" : "Terrier index using docT5query. Porter stemming and stopword removal applied",
+						"lastupdate" : "today!",
+					},
+				],
 			}
 		]
 	}
