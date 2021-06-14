@@ -4,6 +4,34 @@ import os
 
 INDEX_DIR="./indices/"
 
+def sizeof_fmt(num, suffix='B'):
+    for unit in ['','K','M','G','T','P','E','Z']:
+        if abs(num) < 1024.0:
+            return "%3.1f%s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f%s%s" % (num, 'Yi', suffix)
+
+def dirsize(path):
+	import os
+	#initialize the size
+	total_size = 0
+
+	#use the walk() method to navigate through directory tree
+	for dirpath, dirnames, filenames in os.walk(path):
+		for i in filenames:
+			
+			#use join to concatenate all the components of path
+			f = os.path.join(dirpath, i)
+			
+			#use getsize to generate size in bytes and add it to the total size
+			total_size += os.path.getsize(f)
+	return total_size
+
+def variant_size(dataset, variant):
+	import os
+	symlink_path = os.path.join(INDEX_DIR, dataset, variant, "latest")
+	return sizeof_fmt(dirsize(symlink_path))
+
 def variant_date(dataset, variant):
 	import os
 	symlink_path = os.path.join(INDEX_DIR, dataset, variant, "latest")
@@ -32,9 +60,12 @@ if __name__ == "__main__":
 			vmeta = {
 				"name" : v,
 				"desc" : pb.get_thing(d, v, 'get_variant_description')(v),
+				"pipes" : pb.get_thing(d, v, 'get_retrieval_pipelines')(d,v)
 			}
 			vmeta["lastupdate"] = variant_date(d, v)
-			if vmeta["lastupdate"] >  meta["lastupdate"]:
+			vmeta["size"] = variant_size(d, v)
+			# our string dates sort lexographically
+			if vmeta["lastupdate"] > meta["lastupdate"]:
 				meta["lastupdate"] = vmeta["lastupdate"]
 			meta["variants"].append(vmeta)
 		meta["variant_count"] = len(variants)
