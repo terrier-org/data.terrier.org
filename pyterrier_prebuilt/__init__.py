@@ -23,7 +23,7 @@ def get_variants(dataset : str, builddir : str):
 
 def get_default_variant_description(variant : str) -> str:
     if variant == "terrier_unstemmed_text":
-        return "Terrier index, no stemming, no stopword removal. Text is also saved in the MetaIndex to facilitate BERT-based reranking.",
+        return "Terrier index, no stemming, no stopword removal. Text is also saved in the MetaIndex to facilitate BERT-based reranking."
     if variant == "terrier_unstemmed":
         return "Terrier index, no stemming, no stopword removal"
     if variant == "terrier_stemmed":
