@@ -5,9 +5,12 @@ from typing import List
 
 def create_notebook(builddir: str, dataset : str, variants : List[str]):
 
+    DATASET_META = pb.get_thing(dataset, 'bla', 'DOC_INFO')
     cells = []
+    cell1 = "# PyTerrier demonstration for %s" % dataset
+
     cells.append(nbf.v4.new_markdown_cell(
-        "# PyTerrier demonstration for %s" % dataset
+        cell1    
     ))
     cells.append(nbf.v4.new_code_cell(
         """
@@ -26,23 +29,32 @@ dataset = pt.get_dataset('%s')
 
         # if we have multiple queryset, we should detail the queryset 
         if "name" in queryset:
-            desccell = "## Evaluation for %s topics and qrels\n%s" % (queryset)
+            desccell1 = "## Evaluation on %s topics and qrels" % (queryset["name"])
+            desccell2 = ""
             if "desc" in queryset:
-                desccell += "\n%s" % queryset["desc"]
+                desccell2 = "\n%s" % queryset["desc"]
 
             cells.append(nbf.v4.new_markdown_cell(
-                desccell
+                desccell1 + desccell2
             ))
 
         for var in variants:
-            cells.append(nbf.v4.new_code_cell(
-                """
-#%s = pt.BatchRetrieve(dataset.get_index(variant='%s'))
-%s = pt.BatchRetrieve(dataset.get_index()) # TODO add back %s
-systems.append(%s)
-names.append(%s)
-                """ % (var, var, var, var, var, var)))
+            if len(variants) > 1:
+                cells.append(nbf.v4.new_markdown_cell(
+                    "### Systems using index variant %s" % var
+                ))
+            syscells = []
+            print(pb.get_thing(dataset, var, 'get_retrieval_pipelines')(dataset, var))
+            for varname, expression in pb.get_thing(dataset, var, 'get_retrieval_pipelines')(dataset, var):
+                syscells.append("%s = %s" % (varname, expression))
+                syscells.append("systems.append(%s)" % varname)
+                syscells.append("names.append('%s')" % varname)
+                syscells.append("\n")
 
+            cells.append(nbf.v4.new_code_cell(
+                "\n".join(syscells)
+            ))
+        
         topics_dataset = queryset.get("location", [dataset] )[0]
         topics_variant = queryset.get("location", ["bla", None] )[1]
         if topics_variant is None:
@@ -56,6 +68,7 @@ pt.Experiment(
     pt.get_dataset('%s').get_topics(%s),
     pt.get_dataset('%s').get_qrels(%s),
     batch_size=200,
+    drop_unused=True,
     eval_metrics=[%s],
     names=names)
         """ % (

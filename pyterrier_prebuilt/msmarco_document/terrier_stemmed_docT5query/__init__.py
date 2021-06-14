@@ -30,3 +30,8 @@ def index(dest_dir, **kwargs):
     
 def get_variant_description(variant : str) -> str:
     return "Terrier index using docT5query. Porter stemming and stopword removal applied"
+
+def get_retrieval_pipelines(dataset : str, variant : str) -> str:
+    return [
+        ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
+    ]

@@ -21,7 +21,7 @@ TOPICS_QRELS = [
     {
         "name" : "trec-2020",
         "desc" : "43 topics used in the TREC Deep Learning track Passage Ranking task, with deep judgements",
-        "location" : ("trec-deep-learning-passages", "test-2019"),
+        "location" : ("trec-deep-learning-passages", "test-2020"),
         "metrics" : ["ndcg_cut_10"], #TODO insert pyterrier.measures
     }
 ]
@@ -53,3 +53,10 @@ def index(dest_dir, variant='terrier-stemmed'):
 def get_variant_description(variant : str) -> str:
     import pyterrier_prebuilt as pb
     return pb.get_default_variant_description(variant)
+
+def get_retrieval_pipelines(dataset : str, variant : str) -> str:
+    return [
+        ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
+        ( "dph_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='DPH')" % (dataset, variant) ),
+        ( "dph_bo1_" + variant, "dph_%s >> pt.rewrite.Bo1QueryExpansion(pt.get_dataset('%s').get_index('%s') >> dph_%s" % (variant, dataset, variant, variant) ),
+    ]
