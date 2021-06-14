@@ -1,20 +1,22 @@
 
 
-DIR="/local/terrier/Resources/msmarco/docT5query/msmarco-passages/msmarco-passage-expanded"
+DIR="/local/terrier/Resources/msmarco/docT5query/msmarco-docs/output"
+FILE="docs.json.gz" #may not be compressed
 INDEXER_KWARGS={'overwrite' : True}
 MAX_DOCNOLEN = 10
 
 def index(dest_dir):
     import pyterrier as pt
     import json
+    import os
 
     def read_gen():
-        with open('/local/terrier/Resources/msmarco/docT5query/msmarco-docs/output/docs.json') as f:
-                for i, x in enumerate(pt.tqdm(f, unit='d', total=3_200_000)):
-                        y = json.loads(x)
-                        y['docno'] = y['id']
-                        y['text'] = y['contents']
-                        yield y
+        with pt.io.autoopen(os.path.join(DIR, FILE), 'rt') as f:
+            for i, x in enumerate(pt.tqdm(f, unit='d', total=3_200_000)):
+                y = json.loads(x)
+                y['docno'] = y['id']
+                y['text'] = y['contents']
+                yield y
               
     init_args = INDEXER_KWARGS.copy()
     index_args = {}
