@@ -25,6 +25,27 @@ dataset = pt.get_dataset('%s')
 
     TOPICS_QRELS = pb.get_thing(dataset, 'bla', 'TOPICS_QRELS')
 
+    for var in variants:
+        if len(variants) > 1:
+            cells.append(nbf.v4.new_markdown_cell(
+                "## Systems using index variant %s" % var
+            ))
+        syscells = []
+        for varname, expression in pb.get_thing(dataset, var, 'get_retrieval_pipelines')(dataset, var):
+            # syscells.append("from jnius import JavaException")
+            # syscells.append("try:")
+            # syscells.append("  %s = %s" % (varname, expression))
+            # syscells.append("except JavaException as ja:")
+            # syscells.append('  raise ValueError("\\n\\t".join(ja.stacktrace))')
+            syscells.append("%s = %s" % (varname, expression))
+            syscells.append("systems.append(%s)" % varname)
+            syscells.append("names.append('%s')" % varname)
+            syscells.append("\n")
+
+        cells.append(nbf.v4.new_code_cell(
+            "\n".join(syscells)
+        ))
+
     for queryset in TOPICS_QRELS:
 
         # if we have multiple queryset, we should detail the queryset 
@@ -36,23 +57,6 @@ dataset = pt.get_dataset('%s')
 
             cells.append(nbf.v4.new_markdown_cell(
                 desccell1 + desccell2
-            ))
-
-        for var in variants:
-            if len(variants) > 1:
-                cells.append(nbf.v4.new_markdown_cell(
-                    "### Systems using index variant %s" % var
-                ))
-            syscells = []
-            print(pb.get_thing(dataset, var, 'get_retrieval_pipelines')(dataset, var))
-            for varname, expression in pb.get_thing(dataset, var, 'get_retrieval_pipelines')(dataset, var):
-                syscells.append("%s = %s" % (varname, expression))
-                syscells.append("systems.append(%s)" % varname)
-                syscells.append("names.append('%s')" % varname)
-                syscells.append("\n")
-
-            cells.append(nbf.v4.new_code_cell(
-                "\n".join(syscells)
             ))
         
         topics_dataset = queryset.get("location", [dataset] )[0]
