@@ -9,18 +9,11 @@ def calc_md5s(dest_dir : str):
 
 def run_index(dataset : str, variant : str, target_dir : str, date : str):
     import pyterrier_prebuilt
-    module_name = "pyterrier_prebuilt.%s.%s" % (dataset, variant)
-    kwargs={}
-    try:
-        module = importlib.import_module(module_name)
-    except ImportError:
-        module_name = "pyterrier_prebuilt.%s" % (dataset)
-        module = importlib.import_module(module_name)
-        kwargs['variant'] = variant
-    function_name = 'index'
-    
-    index_fn = getattr(module, function_name)
+
+    index_fn = pyterrier_prebuilt.get_thing(dataset, variant, 'index')
     dest_dir = os.path.join(target_dir, dataset, variant, date)
+    kwargs={}
+    kwargs['variant'] = variant
     index_fn(dest_dir, **kwargs)
     calc_md5s(dest_dir)
 

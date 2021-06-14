@@ -1,5 +1,27 @@
 
+DOC_INFO = {
+    "friendlyname" : "Vaswani",
+    "desc" : "The Vaswani NPL corpus is a small test collection of 11,000 abstracts has been used by the Glasgow IR group for many years (created 1990). "+
+        "Due to its small size, it is used for many test cases used in both Terrier and PyTerrier.",
+}
+
 INDEXER_KWARGS={'overwrite' : True}
+TOPICS_QRELS=[
+    {
+        "location" : ("vaswani", None),
+    }
+]
+
+def get_variant_description(variant : str) -> str:
+    if variant == "terrier_unstemmed_text":
+        return "Terrier index, no stemming, no stopword removal. Text is also saved in the MetaIndex to facilitate BERT-based reranking.",
+    if variant == "terrier_unstemmed":
+        return "Terrier index, no stemming, no stopword removal"
+    if variant == "terrier_stemmed":
+        return "Terrier's default Porter stemming, and stopwords removed"
+    if variant == "terrier_stemmed_text":
+        return "Terrier's default Porter stemming, and stopwords removed. Text is also saved in the MetaIndex to facilitate BERT-based reranking."
+    return "unknown variant"
 
 def index(dest_dir, variant='terrier-stemmed'):
     import pyterrier as pt

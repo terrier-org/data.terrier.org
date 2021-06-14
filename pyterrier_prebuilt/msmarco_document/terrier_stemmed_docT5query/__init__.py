@@ -5,7 +5,7 @@ FILE="docs.json.gz" #may not be compressed
 INDEXER_KWARGS={'overwrite' : True}
 MAX_DOCNOLEN = 10
 
-def index(dest_dir):
+def index(dest_dir, **kwargs):
     import pyterrier as pt
     import json
     import os
@@ -28,3 +28,5 @@ def index(dest_dir):
         indexer.setProperty(k, v)
     indexref = indexer.index(read_gen(), **index_args)
     
+def get_variant_description(variant : str) -> str:
+    return "Terrier index using docT5query. Porter stemming and stopword removal applied"

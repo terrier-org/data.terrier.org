@@ -1,5 +1,11 @@
 
 
+
+DOC_INFO = {
+    "friendlyname" : "MSMARCO Document Ranking",
+    "desc" : "A document ranking corpus containing 3.2 million documents. Also used by the TREC Deep Learning track.",
+}
+
 INDEXER_KWARGS={'overwrite' : True}
 MAX_DOCNOLEN = 10
 MAX_TEXT = 4096
@@ -24,4 +30,7 @@ def index(dest_dir, variant='terrier-stemmed'):
     for k,v in props.items():
         indexer.setProperty(k, v)
     indexref = indexer.index(dataset, **index_args)
-    
+
+def get_variant_description(variant : str) -> str:
+    import pyterrier_prebuilt as pb
+    return pb.get_default_variant_description(variant)

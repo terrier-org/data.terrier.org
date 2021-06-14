@@ -18,7 +18,9 @@
         <h2 class="title mb-3">{{dataset.friendlyname}}</h2>
         <p>{{dataset.desc}}</p>
 
+        {% if dataset.notebook_present %}
         <p>Retrieval notebooks: <a href="/indices/{{dataset.name}}/retrieval.html">View</a>, <a href="/indices/{{dataset.name}}/retrieval.ipynb">Download</a></p>
+        {% endif %}
 
         <h3>Variants</h3>
         <p>We have {{dataset.variant_count}} variants for this dataset.</p>

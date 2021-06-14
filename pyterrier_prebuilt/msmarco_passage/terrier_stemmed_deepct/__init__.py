@@ -4,7 +4,7 @@ DIR="/local/terrier/Resources/msmarco/deepct/"
 INDEXER_KWARGS={'overwrite' : True}
 MAX_DOCNOLEN = 10
 
-def index(dest_dir):
+def index(dest_dir, **kwargs):
     import pyterrier as pt
     
     def corpus_iter():
@@ -26,3 +26,5 @@ def index(dest_dir):
         indexer.setProperty(k, v)
     indexref = indexer.index(corpus_iter(), **index_args)
     
+def get_variant_description(variant : str) -> str:
+    return "Terrier index using DeepCT. Porter stemming and stopword removal applied"
