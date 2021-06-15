@@ -1,4 +1,5 @@
 
+PWD=$(shell pwd)
 DATE=$(shell date +'%Y-%m-%d')
 PYTHON=/users/tr.craigm/anaconda3/envs/pyterrier/bin/python
 NBCONVERT=jupyter nbconvert --ExecutePreprocessor.kernel_name=pyterrier --ExecutePreprocessor.timeout=-1
@@ -20,7 +21,11 @@ msmarco_passage:
 	#${PYTHON} index.py msmarco_passage terrier_unstemmed_text ${DESTDIR}
 	#${PYTHON} index.py msmarco_passage terrier_stemmed_docT5query ${DESTDIR}
 	#${PYTHON} index.py msmarco_passage terrier_stemmed_deepct ${DESTDIR}
-	${PYTHON} retrieval_nbs.py indices msmarco_passage terrier_stemmed terrier_unstemmed terrier_stemmed_docT5query terrier_stemmed_deepct
+	#${PYTHON} promote_index.py vaswani ${DATE} ${DESTDIR}
+	#mkdir -p pyt_home/corpora/msmarco_passage/index/
+	#bash -c 'for i in  $PWD/indices/msmarco_passage/*/latest; do VARNAME=`dirname $i| xargs basename `; ln -s $i pyt_home/corpora/msmarco_passage/index/$VARNAME; done'
+	${PYTHON} retrieval_nbs.py indices msmarco_passage terrier_stemmed terrier_stemmed_docT5query terrier_stemmed_deepct
+	#PYTERRIER_HOME=${PWD}/pyt_home/ ${NBCONVERT} --to notebook --execute  ${DESTDIR}/msmarco_passage/retrieval.ipynb
 	${NBCONVERT} --to html ${DESTDIR}/msmarco_passage/retrieval.ipynb --output retrieval.html
 
 msmarco_document:
