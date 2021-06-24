@@ -6,16 +6,10 @@ DOC_INFO = {
 }
 
 TOPICS_QRELS = [
-    # {
-    #     "name" : "dev.small",
-    #     "desc" : "6800 topics with sparse judgements",
-    #     "location" : ("trec-deep-learning-passages", "dev.small"),
-    #     "metrics" : ["recip_rank"],
-    # },
     {
         "name" : "trec-2019",
         "desc" : "43 topics used in the TREC Deep Learning track Passage Ranking task, with deep judgements",
-        "location" : ("trec-deep-learning-passages", "test-2019"),
+        "location" : ("msmarco_passage", "test-2019"),
         "metrics" : ["ndcg_cut_10"], #TODO insert pyterrier.measures
     },
     {
@@ -23,7 +17,13 @@ TOPICS_QRELS = [
         "desc" : "43 topics used in the TREC Deep Learning track Passage Ranking task, with deep judgements",
         "location" : ("trec-deep-learning-passages", "test-2020"),
         "metrics" : ["ndcg_cut_10"], #TODO insert pyterrier.measures
-    }
+    },
+    {
+        "name" : "dev.small",
+        "desc" : "6800 topics with sparse judgements",
+        "location" : ("msmarco_passage", "dev.small"),
+        "metrics" : ["recip_rank"],
+    },
 ]
 
 INDEXER_KWARGS={'overwrite' : True}
