@@ -1,6 +1,6 @@
 
-
-
+VBERT = "onir_pt.reranker('hgf4_joint', ranker_config={'model': 'Capreolus/bert-base-msmarco', 'norm': 'softmax-2'}"
+SLIDING = "pt.text.sliding(length=128, stride=64, prepend_attr='title')"
 DOC_INFO = {
     "friendlyname" : "MSMARCO Document Ranking",
     "desc" : "A document ranking corpus containing 3.2 million documents. Also used by the TREC Deep Learning track.",
@@ -36,8 +36,14 @@ def get_variant_description(variant : str) -> str:
     return pb.get_default_variant_description(variant)
 
 def get_retrieval_pipelines(dataset : str, variant : str) -> str:
-    return [
-        ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
-        ( "dph_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='DPH')" % (dataset, variant) ),
-        ( "dph_bo1_" + variant, "dph_%s >> pt.rewrite.Bo1QueryExpansion(pt.get_dataset('%s').get_index('%s')) >> dph_%s" % (variant, dataset, variant, variant) ),
-    ]
+    if "text" in variant:
+        return [
+            ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
+            ( "bm25_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', metadata=['docno', 'text']) >> %s >> %s" % (dataset, variant, SLIDING, VBERT)  )
+        ]
+    else:
+        return [
+            ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
+            ( "dph_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='DPH')" % (dataset, variant) ),
+            ( "dph_bo1_" + variant, "dph_%s >> pt.rewrite.Bo1QueryExpansion(pt.get_dataset('%s').get_index('%s')) >> dph_%s" % (variant, dataset, variant, variant) ),
+        ]

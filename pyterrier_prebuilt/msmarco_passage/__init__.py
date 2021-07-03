@@ -1,5 +1,6 @@
 
-
+VBERT = "onir_pt.reranker('hgf4_joint', ranker_config={'model': 'Capreolus/bert-base-msmarco', 'norm': 'softmax-2'}"
+SLIDING = "pt.text.sliding(length=128, stride=64, prepend_attr=None)"
 DOC_INFO = {
     "friendlyname" : "MSMARCO Passage Ranking",
     "desc" : "A passage ranking task based on a corpus of 8.8 million passages released by Microsoft, which should be rank based on their relevance to questions.  Also used by the TREC Deep Learning track."
@@ -55,6 +56,11 @@ def get_variant_description(variant : str) -> str:
     return pb.get_default_variant_description(variant)
 
 def get_retrieval_pipelines(dataset : str, variant : str) -> str:
+    if "text" in variant:
+        return [
+            ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
+            ( "bm25_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', metadata=['docno', 'text']) >> %s >> %s" % (dataset, variant, SLIDING, VBERT)  )
+        ]
     return [
         ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
         ( "dph_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='DPH')" % (dataset, variant) ),
