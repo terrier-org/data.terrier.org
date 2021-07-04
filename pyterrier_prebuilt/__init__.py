@@ -18,6 +18,9 @@ def get_variants(dataset : str, builddir : str):
         variant_latest_dir = os.path.join(datasetdir, variant, "latest")
         if not os.path.exists(variant_latest_dir):
             continue
+        if variant == 'default':
+            # its a symlink
+            continue
         rtr.append(variant)
     return rtr
 
