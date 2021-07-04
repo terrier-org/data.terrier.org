@@ -21,7 +21,7 @@ msmarco_passage:
 	#${PYTHON} index.py msmarco_passage terrier_unstemmed_text ${DESTDIR}
 	#${PYTHON} index.py msmarco_passage terrier_stemmed_docT5query ${DESTDIR}
 	#${PYTHON} index.py msmarco_passage terrier_stemmed_deepct ${DESTDIR}
-	#${PYTHON} promote_index.py vaswani ${DATE} ${DESTDIR}
+	#${PYTHON} promote_index.py msmarco_passage ${DATE} ${DESTDIR}
 	#mkdir -p pyt_home/corpora/msmarco_passage/index/
 	#bash -c 'for i in  $PWD/indices/msmarco_passage/*/latest; do VARNAME=`dirname $i| xargs basename `; ln -s $i pyt_home/corpora/msmarco_passage/index/$VARNAME; done'
 	${PYTHON} retrieval_nbs.py indices msmarco_passage terrier_stemmed terrier_stemmed_docT5query terrier_stemmed_deepct
@@ -34,6 +34,13 @@ msmarco_document:
 	${PYTHON} index.py msmarco_document terrier_stemmed_text ${DESTDIR}
 	${PYTHON} index.py msmarco_document terrier_unstemmed_text ${DESTDIR}
 	${PYTHON} index.py msmarco_document terrier_stemmed_docT5query ${DESTDIR}
+
+msmarcov2_document:
+	${PYTHON} index.py msmarcov2_document terrier_stemmed ${DESTDIR}
+	${PYTHON} index.py msmarcov2_document terrier_stemmed_positions ${DESTDIR}
+	${PYTHON} index.py msmarcov2_document terrier_unstemmed ${DESTDIR}
+	${PYTHON} index.py msmarcov2_document terrier_unstemmed_positions ${DESTDIR}
+	${PYTHON} promote_index.py msmarcov2_document ${DATE} ${DESTDIR}
 
 docs:
 	${PYTHON} docs.py
