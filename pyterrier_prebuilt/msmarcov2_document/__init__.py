@@ -6,7 +6,7 @@ DOC_INFO = {
     "desc" : "A document ranking corpus containing 11.9 million documents. Also used by the TREC 2021 Deep Learning track.",
 }
 
-INDEXER_KWARGS={'overwrite' : True}
+INDEXER_KWARGS={'overwrite' : True, 'threads': 8}
 MAX_DOCNOLEN = 25
 MAX_TEXT = 4096
 
