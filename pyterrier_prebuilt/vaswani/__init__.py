@@ -5,7 +5,7 @@ DOC_INFO = {
         "Due to its small size, it is used for many test cases used in both Terrier and PyTerrier.",
 }
 
-INDEXER_KWARGS={'overwrite' : True}
+INDEXER_KWARGS={'overwrite' : True, 'meta_reverse' : ['docno']}
 TOPICS_QRELS=[
     {
         "location" : ("vaswani", None),
