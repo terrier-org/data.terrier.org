@@ -23,23 +23,34 @@
         {% endif %}
 
         <h3>Variants</h3>
-        <p>We have {{dataset.variant_count}} variants for this dataset.</p>
+        <p>We have {{dataset.variant_count}} variants for this dataset:</p>
+        <ul>
+            {% for variant in dataset.variants %}
+            <li><a href="#{{variant.name}}">{{variant.name}}</a></li>
+            {% endfor %}            
+        </ul>
         <p></p>
 
         {% for variant in dataset.variants %}
         <div class="item mb-5">
             <div class="media">
                 <div class="media-body">
-            <h4>{{variant.name}}</h4>
+            <h4><a name="{{variant.name}}">{{variant.name}}</a></h4>
             <div class="meta mb-1"><span class="date">Last Update {{variant.lastupdate}}</span><span class="date">{{variant.size}}</span></div>
             <p>{{variant.desc}}</p>
             <p><a href="indices/{{dataset.name}}/{{variant.name}}/latest/">Browse index</a></p>
 
             <p>Use this for retrieval in PyTerrier:</p>
-            <code class='python copy-snippet'>{% for pipe in variant.pipes %}
+            <!-- <pre> -->
+                <code id="code{{variant.name}}" class='python copy-snippet'>{% for pipe in variant.pipes %}
 {{pipe[0]}} = {{pipe[1]}}
 {% endfor %}
-            </code>
+                </code>
+                <button class="btn" data-clipboard-target="#code{{variant.name}}">
+                    Copy to clipboard
+                </button>
+            <!-- </pre> -->
+            
                 </div><!--//media-body-->
             </div><!--//media-->
         </div><!--//item-->
@@ -48,4 +59,20 @@
 
     </div>
 </article><!--//about-section-->
+<script>
+    var clipboard = new ClipboardJS('.btn');
+
+    clipboard.on('success', function (e) {
+    // console.info('Action:', e.action);
+    // console.info('Text:', e.text);
+    // console.info('Trigger:', e.trigger);
+
+        e.clearSelection();
+    });
+
+    clipboard.on('error', function (e) {
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+    });
+</script>
 {% endblock %}

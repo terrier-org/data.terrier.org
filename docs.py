@@ -45,7 +45,7 @@ if __name__ == "__main__":
 	}
 
 	import pyterrier_prebuilt as pb
-	datasets = ["vaswani", "msmarco_document", "msmarco_passage"]
+	datasets = ["vaswani", "msmarco_document", "msmarco_passage" ]#, "msmarcov2_document"]
 	for d in datasets:
 		meta = pb.get_thing(d, "bla", "DOC_INFO")
 		meta["name"] = d
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 				meta["lastupdate"] = vmeta["lastupdate"]
 			meta["variants"].append(vmeta)
 		meta["variant_count"] = len(variants)
-		print(meta)
+		#print(meta)
 
 	configmap = { d["name"] : d for d in config["datasets"] }
 

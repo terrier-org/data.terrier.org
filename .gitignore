@@ -1,4 +1,5 @@
 /indices/
 __pycache__/
-/wwwroot/
+/wwwroot/*.html
+/wwroot/indices/
 /pyt_home/
