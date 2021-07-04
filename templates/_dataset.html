@@ -23,7 +23,7 @@
         {% endif %}
 
         <h3>Variants</h3>
-        <p>We have {{dataset.variant_count}} variants for this dataset:</p>
+        <p>We have {{dataset.variant_count}} index variants for this dataset:</p>
         <ul>
             {% for variant in dataset.variants %}
             <li><a href="#{{variant.name}}">{{variant.name}}</a></li>
