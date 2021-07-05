@@ -45,7 +45,7 @@ if __name__ == "__main__":
 	}
 
 	import pyterrier_prebuilt as pb
-	datasets = ["vaswani", "msmarco_document", "msmarco_passage" ]#, "msmarcov2_document"]
+	datasets = ["vaswani", "msmarco_document", "msmarco_passage", "msmarcov2_document"]
 	for d in datasets:
 		meta = pb.get_thing(d, "bla", "DOC_INFO")
 		meta["name"] = d
