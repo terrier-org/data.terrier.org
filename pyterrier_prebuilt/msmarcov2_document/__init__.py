@@ -6,6 +6,27 @@ DOC_INFO = {
     "desc" : "A document ranking corpus containing 11.9 million documents. Also used by the TREC 2021 Deep Learning track.",
 }
 
+TOPICS_QRELS = [
+    {
+        "name" : "valid1",
+        "desc" : "43 topics used in the TREC 2019 Deep Learning track, with deep judgements",
+        "location" : ("msmarcov2_document", "valid1"),
+        "metrics" : ["ndcg_cut_10"], #TODO insert pyterrier.measures
+    },
+    {
+        "name" : "valid2",
+        "desc" : "43 topics used in the TREC 2020 Deep Learning track, with deep judgements",
+        "location" : ("msmarcov2_document", "valid2"),
+        "metrics" : ["ndcg_cut_10"], #TODO insert pyterrier.measures
+    },
+    {
+        "name" : "dev1",
+        "desc" : "4,552 topics with sparse judgements",
+        "location" : ("msmarcov2_document", "dev1"),
+        "metrics" : ["recip_rank"],
+    },
+]
+
 INDEXER_KWARGS={'overwrite' : True, 'threads': 8}
 MAX_DOCNOLEN = 25
 MAX_TEXT = 4096
