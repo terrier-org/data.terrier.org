@@ -28,7 +28,7 @@ def index(dest_dir, variant='terrier-stemmed'):
     dataset = pt.get_dataset("vaswani").get_corpus_iter()
 
     init_args = INDEXER_KWARGS.copy()
-    index_args = {}
+    index_args = {'meta' : {'docno' : 20}}
     props = {}
     if variant.startswith('terrier-unstemmed'):
         props["termpipelines"] = ""
