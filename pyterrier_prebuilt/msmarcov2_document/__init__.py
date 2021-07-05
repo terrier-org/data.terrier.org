@@ -15,7 +15,7 @@ TOPICS_QRELS = [
     },
     {
         "name" : "valid2",
-        "desc" : "43 topics used in the TREC 2020 Deep Learning track, with deep judgements",
+        "desc" : "54 topics used in the TREC 2020 Deep Learning track, with deep judgements",
         "location" : ("msmarcov2_document", "valid2"),
         "metrics" : ["ndcg_cut_10"], #TODO insert pyterrier.measures
     },
