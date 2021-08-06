@@ -28,9 +28,13 @@ def get_default_variant_description(variant : str) -> str:
     if variant == "terrier_unstemmed_text":
         return "Terrier index, no stemming, no stopword removal. Text is also saved in the MetaIndex to facilitate BERT-based reranking."
     if variant == "terrier_unstemmed":
-        return "Terrier index, no stemming, no stopword removal"
+        return "Terrier index, no stemming, no stopword removal."
+    if variant == "terrier_unstemmed_positions":
+        return "Terrier index, no stemming, no stopword removal. Position information is saved for proximity or phrase queries."
     if variant == "terrier_stemmed":
-        return "Terrier's default Porter stemming, and stopwords removed"
+        return "Terrier's default Porter stemming, and stopwords removed."
     if variant == "terrier_stemmed_text":
         return "Terrier's default Porter stemming, and stopwords removed. Text is also saved in the MetaIndex to facilitate BERT-based reranking."
+    if variant == "terrier_stemmed_positions":
+        return "Terrier index, default Porter stemming, and stopwords removed. Position information is saved for proximity or phrase queries."
     return "unknown variant"
