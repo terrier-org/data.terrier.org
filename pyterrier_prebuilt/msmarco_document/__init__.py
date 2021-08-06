@@ -10,7 +10,7 @@ INDEXER_KWARGS={'overwrite' : True}
 MAX_DOCNOLEN = 10
 MAX_TEXT = 4096
 
-def index(dest_dir, variant='terrier-stemmed'):
+def index(dest_dir, variant='terrier_stemmed'):
     import pyterrier as pt
     dataset = pt.get_dataset('trec-deep-learning-docs').get_corpus()
 
@@ -19,7 +19,7 @@ def index(dest_dir, variant='terrier-stemmed'):
     props = {}
     init_args['meta']={'docno' : MAX_DOCNOLEN}
 
-    if variant.startswith('terrier-unstemmed'):
+    if variant.startswith('terrier_unstemmed'):
         props["termpipelines"] = ""
         
     if variant.endswith('text'):

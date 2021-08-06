@@ -23,14 +23,14 @@ def get_variant_description(variant : str) -> str:
         return "Terrier's default Porter stemming, and stopwords removed. Text is also saved in the MetaIndex to facilitate BERT-based reranking."
     return "unknown variant"
 
-def index(dest_dir, variant='terrier-stemmed'):
+def index(dest_dir, variant='terrier_stemmed'):
     import pyterrier as pt
     dataset = pt.get_dataset("vaswani").get_corpus_iter()
 
     init_args = INDEXER_KWARGS.copy()
     index_args = {'meta' : {'docno' : 20}}
     props = {}
-    if variant.startswith('terrier-unstemmed'):
+    if variant.startswith('terrier_unstemmed'):
         props["termpipelines"] = ""
     if variant.endswith('text'):
         index_args['meta']={'docno' : 20, 'text': 4096}

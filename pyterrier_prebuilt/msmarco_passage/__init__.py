@@ -1,6 +1,5 @@
 
 VBERT = "onir_pt.reranker('hgf4_joint', ranker_config={'model': 'Capreolus/bert-base-msmarco', 'norm': 'softmax-2'}"
-SLIDING = "pt.text.sliding(length=128, stride=64, prepend_attr=None)"
 DOC_INFO = {
     "friendlyname" : "MSMARCO Passage Ranking",
     "desc" : "A passage ranking task based on a corpus of 8.8 million passages released by Microsoft, which should be rank based on their relevance to questions.  Also used by the TREC Deep Learning track."
@@ -31,7 +30,7 @@ INDEXER_KWARGS={'overwrite' : True}
 MAX_DOCNOLEN = 10
 MAX_TEXT = 4096
 
-def index(dest_dir, variant='terrier-stemmed'):
+def index(dest_dir, variant='terrier_stemmed'):
     import pyterrier as pt
     dataset = pt.get_dataset('irds:msmarco-passage').get_corpus_iter()
 
@@ -40,7 +39,7 @@ def index(dest_dir, variant='terrier-stemmed'):
     props = {}
     index_args['meta']={'docno' : MAX_DOCNOLEN}
 
-    if variant.startswith('terrier-unstemmed'):
+    if variant.startswith('terrier_unstemmed'):
         props["termpipelines"] = ""
         
     if variant.endswith('text'):
@@ -59,7 +58,7 @@ def get_retrieval_pipelines(dataset : str, variant : str) -> str:
     if "text" in variant:
         return [
             ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
-            ( "bm25_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', metadata=['docno', 'text']) >> %s >> %s" % (dataset, variant, SLIDING, VBERT)  )
+            ( "bm25_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', metadata=['docno', 'text']) >> %s" % (dataset, variant, VBERT)  )
         ]
     return [
         ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
