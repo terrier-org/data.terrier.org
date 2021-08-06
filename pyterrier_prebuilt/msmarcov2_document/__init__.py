@@ -31,7 +31,7 @@ INDEXER_KWARGS={'overwrite' : True, 'threads': 8}
 MAX_DOCNOLEN = 25
 MAX_TEXT = 4096
 
-def index(dest_dir, variant='terrier-stemmed'):
+def index(dest_dir, variant='terrier_stemmed'):
     import pyterrier as pt
     dataset = pt.get_dataset('irds:msmarco-document-v2').get_corpus_iter()
 
@@ -43,7 +43,7 @@ def index(dest_dir, variant='terrier-stemmed'):
     if 'positions' in variant:
         init_args['blocks'] = True
 
-    if variant.startswith('terrier-unstemmed'):
+    if variant.startswith('terrier_unstemmed'):
         props["termpipelines"] = ""
         
     if variant.endswith('text'):
