@@ -6,6 +6,14 @@ MD5 = "md5" if sys.platform == 'darwin' else "md5sum"
 
 def calc_md5s(dest_dir : str):
     os.system("cd %s; %s * > md5sums" % (dest_dir, MD5) )
+    
+    #finally, append file listing
+    with open(os.path.join(dest_dir, 'files'), 'wt') as filelist:
+        for dirpath, dirnames, filenames in os.walk(dest_dir):
+            for i in filenames:
+                #use join to concatenate all the components of path
+                f = os.path.join(dirpath, i)
+                filelist.write('%d %s' % (os.path.getsize(f), ))
 
 def run_index(dataset : str, variant : str, target_dir : str, date : str):
     import pyterrier_prebuilt
@@ -31,5 +39,5 @@ if __name__ == '__main__':
         from datetime import datetime
         date = datetime.today().strftime('%Y-%m-%d')
         import pyterrier as pt
-        pt.init()
+        pt.init(logging='INFO', mem=80 * 1024)
         run_index(args[1], args[2], args[3], date)
