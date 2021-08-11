@@ -3,7 +3,7 @@ VBERT = "onir_pt.reranker('hgf4_joint', ranker_config={'model': 'Capreolus/bert-
 SLIDING = "pt.text.sliding(length=128, stride=64, prepend_attr='title')"
 DOC_INFO = {
     "friendlyname" : "MSMARCOv2 Document Ranking",
-    "desc" : "A document ranking corpus containing 11.9 million documents. Also used by the TREC 2021 Deep Learning track.",
+    "desc" : "A new version of the MSMARCO document ranking corpus, containing 11.9 million documents. Also used by the TREC 2021 Deep Learning track.",
 }
 
 TOPICS_QRELS = [
