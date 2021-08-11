@@ -5,6 +5,7 @@ def promote(dataset : str, date : str, builddir : str):
     for variant in os.listdir(datasetdir):
         variant_dated_dir = os.path.join(datasetdir, variant, date)
         if not os.path.exists(variant_dated_dir):
+            print("ignoring %s" % variant_dated_dir)
             continue
         symlink = os.path.join(datasetdir, variant, "latest")
         if os.path.exists(symlink):
