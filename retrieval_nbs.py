@@ -31,6 +31,7 @@ dataset = pt.get_dataset('%s')
                 "## Systems using index variant %s" % var
             ))
         syscells = []
+        systems = []
         for varname, expression in pb.get_thing(dataset, var, 'get_retrieval_pipelines')(dataset, var):
             # syscells.append("from jnius import JavaException")
             # syscells.append("try:")
@@ -38,8 +39,9 @@ dataset = pt.get_dataset('%s')
             # syscells.append("except JavaException as ja:")
             # syscells.append('  raise ValueError("\\n\\t".join(ja.stacktrace))')
             syscells.append("%s = %s" % (varname, expression))
-            syscells.append("systems.append(%s)" % varname)
-            syscells.append("names.append('%s')" % varname)
+            systems.append(varname)
+            # syscells.append("systems.append(%s)" % varname)
+            # syscells.append("names.append('%s')" % varname)
             syscells.append("\n")
 
         cells.append(nbf.v4.new_code_cell(
@@ -68,19 +70,21 @@ dataset = pt.get_dataset('%s')
         cells.append(nbf.v4.new_code_cell(
             """
 pt.Experiment(
-    systems,
+    [%s],
     pt.get_dataset('%s').get_topics(%s),
     pt.get_dataset('%s').get_qrels(%s),
     batch_size=200,
-    drop_unused=True,
+    filter_by_qrels=True,
     eval_metrics=[%s],
-    names=names)
+    names=%s)
         """ % (
+            ', '.join(systems),
             topics_dataset,
             topics_variant,
             topics_dataset,
             topics_variant,
-            ", ".join( map( lambda s : "'%s'" % s, queryset.get("metrics", ["map"] ) ) )
+            ", ".join( map( lambda s : "'%s'" % s, queryset.get("metrics", ["map"] ) ) ),
+            str(systems)
                 ) ))
 
     nb = nbf.v4.new_notebook()
