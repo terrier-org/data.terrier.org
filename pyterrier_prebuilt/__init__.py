@@ -8,7 +8,9 @@ def get_thing(dataset : str, variant : str, name : str):
         module_name = "pyterrier_prebuilt.%s" % (dataset)
         module = importlib.import_module(module_name)
         kwargs['variant'] = variant
-    return getattr(module, name)
+    if hasattr(module, name):
+        return getattr(module, name)
+    return None
     
 def get_variants(dataset : str, builddir : str):
     import os

@@ -47,6 +47,7 @@ if __name__ == "__main__":
 	import pyterrier_prebuilt as pb
 	datasets = ["vaswani", "msmarco_document", "msmarco_passage", "msmarcov2_document", "msmarcov2_passage"]
 	for d in datasets:
+		print("Dataset %s" % d)
 		meta = pb.get_thing(d, "bla", "DOC_INFO")
 		meta["name"] = d
 		config["datasets"].append(meta)
@@ -57,11 +58,15 @@ if __name__ == "__main__":
 		meta["notebook_present"] = os.path.exists(os.path.join(INDEX_DIR, d, "retrieval.html"))
 
 		for v in variants:
+			print("Variant %s" % v)
 			vmeta = {
 				"name" : v,
 				"desc" : pb.get_thing(d, v, 'get_variant_description')(v),
+				"pipes_header" : pb.get_thing(d, v, 'get_retrieval_head')(d,v),
 				"pipes" : pb.get_thing(d, v, 'get_retrieval_pipelines')(d,v)
 			}
+			if vmeta["pipes_header"] is None:
+				vmeta["pipes_header"] = []
 			vmeta["lastupdate"] = variant_date(d, v)
 			vmeta["size"] = variant_size(d, v)
 			# our string dates sort lexographically

@@ -40,6 +40,9 @@ def index(dest_dir, variant='terrier_stemmed'):
         indexer.setProperty(k, v)
     indexref = indexer.index(dataset, **index_args)
 
+def get_retrieval_head(dataset : str, variant : str) -> str:
+    return None
+
 def get_retrieval_pipelines(dataset : str, variant : str) -> str:
     return [
         ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),

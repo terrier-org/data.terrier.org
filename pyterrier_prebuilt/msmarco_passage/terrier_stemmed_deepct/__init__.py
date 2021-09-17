@@ -25,6 +25,9 @@ def index(dest_dir, **kwargs):
     for k,v in props.items():
         indexer.setProperty(k, v)
     indexref = indexer.index(corpus_iter(), **index_args)
+
+def get_retrieval_head(dataset : str, variant : str) -> str:
+    return None
     
 def get_variant_description(variant : str) -> str:
     return "Terrier index using DeepCT. Porter stemming and stopword removal applied"

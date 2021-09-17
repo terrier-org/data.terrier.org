@@ -35,11 +35,19 @@ def get_variant_description(variant : str) -> str:
     import pyterrier_prebuilt as pb
     return pb.get_default_variant_description(variant)
 
+def get_retrieval_head(dataset : str, variant : str) -> str:
+    if "text" in variant:
+        return [
+            'import onir_pt',
+            '# Lets use a Vanilla BERT ranker from OpenNIR. We\'ll use the Capreolus model available from Huggingface',
+            'vanilla_bert = %s' % VBERT
+        ]
+
 def get_retrieval_pipelines(dataset : str, variant : str) -> str:
     if "text" in variant:
         return [
             ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
-            ( "bm25_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', metadata=['docno', 'text']) >> %s >> %s" % (dataset, variant, SLIDING, VBERT)  )
+            ( "bm25_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', metadata=['docno', 'text']) >> %s >> %s" % (dataset, variant, SLIDING, 'vanilla_bert')  )
         ]
     else:
         return [

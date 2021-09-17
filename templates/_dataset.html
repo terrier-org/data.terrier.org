@@ -42,10 +42,11 @@
 
             <p>Use this for retrieval in PyTerrier:</p>
             <!-- <pre> -->
-                <code id="code{{variant.name}}" class='python copy-snippet'>{% for pipe in variant.pipes %}
+                <code id="code{{variant.name}}" class='python copy-snippet'>{% for header in variant.pipes_header %}{{header}}
+{% endfor %}{% for pipe in variant.pipes %}
 {{pipe[0]}} = {{pipe[1]}}
 {% endfor %}
-                </code>
+</code>
                 <button class="btn" data-clipboard-target="#code{{variant.name}}">
                     Copy to clipboard
                 </button>

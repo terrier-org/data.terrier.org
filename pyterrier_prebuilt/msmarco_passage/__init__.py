@@ -1,5 +1,6 @@
 
-VBERT = "onir_pt.reranker('hgf4_joint', ranker_config={'model': 'Capreolus/bert-base-msmarco', 'norm': 'softmax-2'}"
+from pyterrier.measures import *
+VBERT = "onir_pt.reranker('hgf4_joint', ranker_config={'model': 'Capreolus/bert-base-msmarco', 'norm': 'softmax-2'})"
 DOC_INFO = {
     "friendlyname" : "MSMARCO Passage Ranking",
     "desc" : "A passage ranking task based on a corpus of 8.8 million passages released by Microsoft, which should be rank based on their relevance to questions.  Also used by the TREC Deep Learning track."
@@ -10,13 +11,13 @@ TOPICS_QRELS = [
         "name" : "trec-2019",
         "desc" : "43 topics used in the TREC Deep Learning track Passage Ranking task, with deep judgements",
         "location" : ("msmarco_passage", "test-2019"),
-        "metrics" : ["ndcg_cut_10"], #TODO insert pyterrier.measures
+        "metrics" : [RR(rel=2), nDCG@10, nDCG@100, AP(rel=2)], #TODO insert pyterrier.measures
     },
     {
         "name" : "trec-2020",
         "desc" : "43 topics used in the TREC Deep Learning track Passage Ranking task, with deep judgements",
         "location" : ("trec-deep-learning-passages", "test-2020"),
-        "metrics" : ["ndcg_cut_10"], #TODO insert pyterrier.measures
+        "metrics" : [RR(rel=2), nDCG@10, nDCG@100, AP(rel=2)], #TODO insert pyterrier.measures
     },
     {
         "name" : "dev.small",
@@ -54,11 +55,19 @@ def get_variant_description(variant : str) -> str:
     import pyterrier_prebuilt as pb
     return pb.get_default_variant_description(variant)
 
+def get_retrieval_head(dataset : str, variant : str) -> str:
+    if "text" in variant:
+        return [
+            'import onir_pt',
+            '# Lets use a Vanilla BERT ranker from OpenNIR. We\'ll use the Capreolus model available from Huggingface',
+            'vanilla_bert = %s' % VBERT
+        ]
+
 def get_retrieval_pipelines(dataset : str, variant : str) -> str:
     if "text" in variant:
         return [
-            ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
-            ( "bm25_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', metadata=['docno', 'text']) >> %s" % (dataset, variant, VBERT)  )
+            ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', metadata=['docno', 'text'])" % (dataset, variant) ),
+            ( "bm25_bert_" + variant, "bm25_%s >> %s" % (variant, 'vanilla_bert')  )
         ]
     return [
         ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),

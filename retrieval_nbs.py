@@ -7,31 +7,49 @@ def create_notebook(builddir: str, dataset : str, variants : List[str]):
 
     DATASET_META = pb.get_thing(dataset, 'bla', 'DOC_INFO')
     cells = []
-    cell1 = "# PyTerrier demonstration for %s" % dataset
+    cell1 = "# PyTerrier demonstration for %s\n\n" % dataset
+    meta = pb.get_thing(dataset, "bla", "DOC_INFO")
+    cell1 += "This notebook demonstrates retrieval using PyTerrier on the "+ meta["friendlyname"] + " corpus\n\n"
+    cell1 += "About the corpus: " + meta["desc"]
 
     cells.append(nbf.v4.new_markdown_cell(
         cell1    
     ))
     cells.append(nbf.v4.new_code_cell(
         """
+#!pip install -q python-terrier
 import pyterrier as pt
 if not pt.started():
     pt.init()
 
-systems=[]
-names=[]
+from pyterrier.measures import *
 dataset = pt.get_dataset('%s')
         """ % dataset))
 
     TOPICS_QRELS = pb.get_thing(dataset, 'bla', 'TOPICS_QRELS')
 
+    systems = []
     for var in variants:
         if len(variants) > 1:
-            cells.append(nbf.v4.new_markdown_cell(
-                "## Systems using index variant %s" % var
-            ))
+            variant_desc =  "## Systems using index variant %s" % var
+            text = pb.get_thing(dataset, var, 'get_variant_description')(var)
+            variant_desc += "\n" + text
+            cells.append(nbf.v4.new_markdown_cell(variant_desc))
+        
+        
+        # add any pre-requisite stuff
         syscells = []
-        systems = []
+        HEADER_LINES = pb.get_thing(dataset, var, 'get_retrieval_head')(dataset, var)
+        if HEADER_LINES is not None:
+            for line in HEADER_LINES:
+                syscells.append(line)
+        if len(syscells) > 0:
+            cells.append(nbf.v4.new_code_cell(
+                "\n".join(syscells)
+            ))
+        
+
+        syscells = []
         for varname, expression in pb.get_thing(dataset, var, 'get_retrieval_pipelines')(dataset, var):
             # syscells.append("from jnius import JavaException")
             # syscells.append("try:")
@@ -39,10 +57,10 @@ dataset = pt.get_dataset('%s')
             # syscells.append("except JavaException as ja:")
             # syscells.append('  raise ValueError("\\n\\t".join(ja.stacktrace))')
             syscells.append("%s = %s" % (varname, expression))
+            syscells.append("")
+
+            # keep track of names and variable names
             systems.append(varname)
-            # syscells.append("systems.append(%s)" % varname)
-            # syscells.append("names.append('%s')" % varname)
-            syscells.append("\n")
 
         cells.append(nbf.v4.new_code_cell(
             "\n".join(syscells)
@@ -75,7 +93,7 @@ pt.Experiment(
     pt.get_dataset('%s').get_qrels(%s),
     batch_size=200,
     filter_by_qrels=True,
-    eval_metrics=[%s],
+    eval_metrics=%s,
     names=%s)
         """ % (
             ', '.join(systems),
@@ -83,7 +101,8 @@ pt.Experiment(
             topics_variant,
             topics_dataset,
             topics_variant,
-            ", ".join( map( lambda s : "'%s'" % s, queryset.get("metrics", ["map"] ) ) ),
+            str(queryset.get("metrics", ["map"] )),
+            #", ".join( map( lambda s : "'%s'" % s, queryset.get("metrics", ["map"] ) ) ),
             str(systems)
                 ) ))
 
