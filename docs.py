@@ -1,8 +1,27 @@
 from staticjinja import Site
+from pygments import highlight, token
+from pygments.lexers import PythonLexer
+from pygments.formatters import HtmlFormatter
 import sys
 import os
 
 INDEX_DIR="./indices/"
+
+class PythonFunctionLexer(PythonLexer):
+    def get_tokens(self, s):
+        # A version of PythonLexer that also highlights functions when they are called
+        it = super().get_tokens(s)
+        prev = next(it)
+        for tok in it:
+            if prev[0] == token.Name and tok == (token.Punctuation, '('):
+                yield prev[0].Function, prev[1]
+            else:
+                yield prev
+            prev = tok
+        yield prev
+
+def python_pprint(code):
+	return highlight(code, PythonFunctionLexer(ensurenl=False), HtmlFormatter(nowrap=True)).replace('\n', '<br/>')
 
 def sizeof_fmt(num, suffix='B'):
     for unit in ['','K','M','G','T','P','E','Z']:
@@ -67,6 +86,10 @@ if __name__ == "__main__":
 			}
 			if vmeta["pipes_header"] is None:
 				vmeta["pipes_header"] = []
+			vmeta['example'] = python_pprint('\n\n'.join(
+				vmeta["pipes_header"]
+				[f'{l} = {r}' for l, r in vmeta['pipes']]
+				))
 			vmeta["lastupdate"] = variant_date(d, v)
 			vmeta["size"] = variant_size(d, v)
 			# our string dates sort lexographically
