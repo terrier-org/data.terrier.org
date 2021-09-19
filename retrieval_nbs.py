@@ -9,7 +9,7 @@ def create_notebook(builddir: str, dataset : str, variants : List[str]):
     cells = []
     cell1 = "# PyTerrier demonstration for %s\n\n" % dataset
     meta = pb.get_thing(dataset, "bla", "DOC_INFO")
-    cell1 += "This notebook demonstrates retrieval using PyTerrier on the "+ meta["friendlyname"] + " corpus\n\n"
+    cell1 += "This notebook demonstrates retrieval using PyTerrier on the "+ meta["friendlyname"] + " corpus.\n\n"
     cell1 += "About the corpus: " + meta["desc"]
 
     cells.append(nbf.v4.new_markdown_cell(

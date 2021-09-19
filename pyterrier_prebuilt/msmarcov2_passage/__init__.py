@@ -2,7 +2,7 @@
 VBERT = "onir_pt.reranker('hgf4_joint', ranker_config={'model': 'Capreolus/bert-base-msmarco', 'norm': 'softmax-2'}"
 DOC_INFO = {
     "friendlyname" : "MSMARCO v2 Passage Ranking",
-    "desc" : "A revised corpus of 138M passages released by Microsoft in July 2021, which should be rank based on their relevance to questions.  Also used by the TREC 2021 Deep Learning track."
+    "desc" : "A revised corpus of 138M passages released by Microsoft in July 2021, which should be ranked based on their relevance to questions.  Also used by the TREC 2021 Deep Learning track."
 }
 
 TOPICS_QRELS = [

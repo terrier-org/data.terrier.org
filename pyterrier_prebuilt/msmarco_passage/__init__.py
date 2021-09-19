@@ -3,7 +3,7 @@ from pyterrier.measures import *
 VBERT = "onir_pt.reranker('hgf4_joint', ranker_config={'model': 'Capreolus/bert-base-msmarco', 'norm': 'softmax-2'})"
 DOC_INFO = {
     "friendlyname" : "MSMARCO Passage Ranking",
-    "desc" : "A passage ranking task based on a corpus of 8.8 million passages released by Microsoft, which should be rank based on their relevance to questions.  Also used by the TREC Deep Learning track."
+    "desc" : "A passage ranking task based on a corpus of 8.8 million passages released by Microsoft, which should be ranked based on their relevance to questions.  Also used by the TREC Deep Learning track."
 }
 
 TOPICS_QRELS = [

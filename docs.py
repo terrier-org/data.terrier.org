@@ -88,6 +88,7 @@ if __name__ == "__main__":
 				vmeta["pipes_header"] = []
 			vmeta['example'] = python_pprint('\n\n'.join(
 				vmeta["pipes_header"]
+				+
 				[f'{l} = {r}' for l, r in vmeta['pipes']]
 				))
 			vmeta["lastupdate"] = variant_date(d, v)
