@@ -2,6 +2,35 @@
 {% block body %}
 
 <style>
+    .cpy {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: white;
+        border: 1px solid #999;
+        font-size: 1.2em;
+        padding: 4px 8px;
+    }
+    .cpy:hover {
+        background-color: #eee;
+        border-color: #666;
+    }
+    .cpy:hover::before {
+        content: attr(data-title);
+        position: absolute;
+        right: 0;
+        font-size: 12px;
+        top: 8px;
+        background-color: #444;
+        color: white;
+        width: 110px;
+        margin-right: 38px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+    /* only show copy button on hover over code block */
+    code .cpy { display: none; }
+    code:hover .cpy { display: inline-block; }
+
     code.python {
         border-style: solid;
         border-width: thin;
@@ -10,6 +39,7 @@
         border-color: black;
         padding: 8px;
         color: black;
+        position: relative; /* make the copy button able to be position: absolute within the code block */
     }
 
 .highlight .hll { background-color: #ffffcc }
@@ -107,17 +137,13 @@
         <div class="item mb-5">
             <div class="media">
                 <div class="media-body">
-            <h4><a name="{{variant.name}}">{{variant.name}}</a></h4>
-            <div class="meta mb-1"><span class="date">Last Update {{variant.lastupdate}}</span><span class="date">{{variant.size}}</span></div>
-            <p>{{variant.desc}}</p>
-            <p><a href="indices/{{dataset.name}}/{{variant.name}}/latest/">Browse index</a></p>
+                    <h4><a name="{{variant.name}}">{{variant.name}}</a></h4>
+                    <div class="meta mb-1"><span class="date">Last Update {{variant.lastupdate}}</span><span class="date">{{variant.size}}</span></div>
+                    <p>{{variant.desc}}</p>
+                    <p><a href="indices/{{dataset.name}}/{{variant.name}}/latest/">Browse index</a></p>
 
-            <p>Use this for retrieval in PyTerrier:</p>
-                <code id="code{{variant.name}}" class='python copy-snippet highlight'>{{variant.example}}</code>
-                <button class="btn" data-clipboard-target="#code{{variant.name}}">
-                    Copy to clipboard
-                </button>
-            
+                    <p>Use this for retrieval in PyTerrier:</p>
+                    <code id="code{{variant.name}}" class='python copy-snippet highlight'>{{variant.example}}<button class="cpy" data-title="Copy to clipboard" data-clipboard-target="#code{{variant.name}}">📋</button></code>
                 </div><!--//media-body-->
             </div><!--//media-->
         </div><!--//item-->
@@ -127,14 +153,12 @@
     </div>
 </article><!--//about-section-->
 <script>
-    var clipboard = new ClipboardJS('.btn');
+    var clipboard = new ClipboardJS('.cpy');
 
     clipboard.on('success', function (e) {
-    // console.info('Action:', e.action);
-    // console.info('Text:', e.text);
-    // console.info('Trigger:', e.trigger);
-
         e.clearSelection();
+        e.trigger.textContent = '✅';
+        e.trigger.addEventListener('mouseout', function () {e.trigger.textContent = '📋';}, { once: true, capture: false });
     });
 
     clipboard.on('error', function (e) {
