@@ -58,6 +58,7 @@ def get_variant_description(variant : str) -> str:
 def get_retrieval_head(dataset : str, variant : str) -> str:
     if "text" in variant:
         return [
+            '#!pip install git+https://github.com/Georgetown-IR-Lab/OpenNIR.git',
             'import onir_pt',
             '# Lets use a Vanilla BERT ranker from OpenNIR. We\'ll use the Capreolus model available from Huggingface',
             'vanilla_bert = %s' % VBERT
