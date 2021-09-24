@@ -38,7 +38,7 @@ def get_variant_description(variant : str) -> str:
 def get_retrieval_head(dataset : str, variant : str) -> str:
     if "text" in variant:
         return [
-            '#!pip install git+https://github.com/Georgetown-IR-Lab/OpenNIR.git'
+            '#!pip install git+https://github.com/Georgetown-IR-Lab/OpenNIR.git',
             'import onir_pt',
             '# Lets use a Vanilla BERT ranker from OpenNIR. We\'ll use the Capreolus model available from Huggingface',
             'vanilla_bert = %s' % VBERT
@@ -47,12 +47,12 @@ def get_retrieval_head(dataset : str, variant : str) -> str:
 def get_retrieval_pipelines(dataset : str, variant : str) -> str:
     if "text" in variant:
         return [
-            ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
-            ( "bm25_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', metadata=['docno', 'text']) >> %s >> %s" % (dataset, variant, SLIDING, 'vanilla_bert')  )
+            #( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', num_results=100)" % (dataset, variant) ),
+            ( "bm25_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', metadata=['docno', 'text'], num_results=100) >> %s >> %s" % (dataset, variant, SLIDING, 'vanilla_bert')  )
         ]
     else:
         return [
-            ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
-            ( "dph_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='DPH')" % (dataset, variant) ),
+            ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', num_results=100)" % (dataset, variant) ),
+            ( "dph_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='DPH', num_results=100)" % (dataset, variant) ),
             ( "dph_bo1_" + variant, "dph_%s >> pt.rewrite.Bo1QueryExpansion(pt.get_dataset('%s').get_index('%s')) >> dph_%s" % (variant, dataset, variant, variant) ),
         ]
