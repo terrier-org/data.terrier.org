@@ -74,7 +74,9 @@ if __name__ == "__main__":
 		meta["variants"] = []
 		meta["lastupdate"] = "(unknown)"
 
-		meta["notebook_present"] = os.path.exists(os.path.join(INDEX_DIR, d, "retrieval.html"))
+		notebook_loc = os.path.join(INDEX_DIR, d, "retrieval.html")
+		meta["notebook_present"] = os.path.exists(notebook_loc)
+		print("Notebook found at %s: %s" % (notebook_loc, meta["notebook_present"]))
 
 		for v in variants:
 			print("Variant %s" % v)
