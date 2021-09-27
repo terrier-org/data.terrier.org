@@ -1,5 +1,5 @@
 
-
+from typing import List
 DIR="/local/terrier/Resources/msmarco/docT5query/msmarco-docs/output"
 FILE="docs.json.gz" #may not be compressed
 INDEXER_KWARGS={'overwrite' : True}
@@ -29,9 +29,12 @@ def index(dest_dir, **kwargs):
     indexref = indexer.index(read_gen(), **index_args)
     
 def get_variant_description(variant : str) -> str:
-    return "Terrier index using docT5query. Porter stemming and stopword removal applied"
+    return "Terrier index using docT5query. Porter stemming and stopword removal applied."
+
+def get_retrieval_head(dataset : str, variant : str) -> List[str]:
+    return []
 
 def get_retrieval_pipelines(dataset : str, variant : str) -> str:
     return [
-        ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
+        ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', num_results=100)" % (dataset, variant) ),
     ]
