@@ -15,14 +15,15 @@ def index(dest_dir, variant=None):
     with open(os.path.join(dest_dir, 'ColBERTFactory.args.json'), 'wt') as argsfile:
         kwargs = {
             'colbert_model' : checkpoint,
+            'faiss_partitions': 100
         }
         argsfile.write(json.dumps(kwargs))
 
 def get_variant_description(variant : str) -> str:
-    return "ColBERT dense retrieval index using model trained by UoG for TREC 2020 DL track"
+    return "ColBERT dense retrieval index using model trained by UoG for TREC 2020 DL track. Uses the pyterrier_colbert plugin."
 
 def get_retrieval_head(dataset : str, variant : str) -> str:
-    return ['from pyterrier_colbert.ranking import ColBERTFactory']
+    return ['#!pip install --upgrade git+https://github.com/terrierteam/pyterrier_colbert.git', 'from pyterrier_colbert.ranking import ColBERTFactory']
 
 def get_retrieval_pipelines(dataset : str, variant : str) -> List[str]:
     return [
