@@ -11,9 +11,11 @@ def calc_md5s(dest_dir : str):
     with open(os.path.join(dest_dir, 'files'), 'wt') as filelist:
         for dirpath, dirnames, filenames in os.walk(dest_dir):
             for i in filenames:
+                if i == 'files':
+                    continue
                 #use join to concatenate all the components of path
                 f = os.path.join(dirpath, i)
-                filelist.write('%d %s' % (os.path.getsize(f), i))
+                filelist.write('%d %s\n' % (os.path.getsize(f), i))
 
 def run_index(dataset : str, variant : str, target_dir : str, date : str):
     import pyterrier_prebuilt
