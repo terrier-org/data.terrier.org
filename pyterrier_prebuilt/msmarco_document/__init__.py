@@ -1,7 +1,7 @@
 from typing import List
 import itertools
 from pyterrier.measures import *
-VBERT = "onir_pt.reranker('hgf4_joint', ranker_config={'model': 'Capreolus/bert-base-msmarco', 'norm': 'softmax-2'}"
+VBERT = "onir_pt.reranker('hgf4_joint',  text_field='body', ranker_config={'model': 'Capreolus/bert-base-msmarco', 'norm': 'softmax-2'})"
 SLIDING = "pt.text.sliding(length=128, stride=64, prepend_attr='title')"
 MAXP = "pt.text.max_passage()"
 DOC_INFO = {
@@ -74,7 +74,7 @@ def get_retrieval_pipelines(dataset : str, variant : str) -> List[str]:
     if "text" in variant:
         return [
             #( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', num_results=100)" % (dataset, variant) ),
-            ( "bm25_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', metadata=['docno', 'title', 'text'], num_results=100) >> %s >> %s >> %s" % 
+            ( "bm25_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25', metadata=['docno', 'title', 'body'], num_results=100) >> %s >> %s >> %s" % 
                 (dataset, variant, SLIDING, 'vanilla_bert', MAXP)  )
         ]
     else:
