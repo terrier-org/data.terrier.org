@@ -80,11 +80,22 @@ dataset = pt.get_dataset('%s')
             ))
         
         topics_dataset = queryset.get("location", [dataset] )[0]
-        topics_variant = queryset.get("location", ["bla", None] )[1]
+        topics_variant = queryset.get("location", ["bla", None] )[1:]
+        if len(topics_variant) == 1:
+            topics_variant = topics_variant[0]
+            qrels_variant = topics_variant
+        if len(topics_variant) == 2:
+            topics_variant, qrels_variant = topics_variant
+
         if topics_variant is None:
             topics_variant = ''
         else:
             topics_variant = "'%s'" % topics_variant
+
+        if qrels_variant is None:
+            qrels_variant = ''
+        else:
+            qrels_variant = "'%s'" % qrels_variant
         cells.append(nbf.v4.new_code_cell(
             """
 pt.Experiment(
@@ -100,7 +111,7 @@ pt.Experiment(
             topics_dataset,
             topics_variant,
             topics_dataset,
-            topics_variant,
+            qrels_variant,
             str(queryset.get("metrics", ["map"] )),
             #", ".join( map( lambda s : "'%s'" % s, queryset.get("metrics", ["map"] ) ) ),
             str(systems)
