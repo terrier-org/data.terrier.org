@@ -1,17 +1,29 @@
 # pyterrier_prebuilt
 
-This repository provides a tool to build standard indices for freely available corpora.
+This repository contains the source code for the (Py)Terrier Data Repository - http://data.terrier.org.
 
+In particular, it contains the Python scripts to build indices for well-known test collections, as well as to create and execute notebooks to document the known performances of those indices.
 
-## Requirements:
+## Features
 
- - MH: To make Terrier indices available for standard corpora via PyTerrier, hosted on a publicly accessible website
- - SH: To make non-Terrier indices available
- - SH: To have indices versioned, but still able to request latest index
- - SH: Indices should be verifiably correct, e.g. through md5sums
- - SH: Notebooks demonstrating retrieval effectiveness of using these pre-built indices can be made available, with pre-populated results
+ - Builds Terrier indices (and those from other PyTerrier plugsin, such as [pyterrier_colbert](https://github.com/terrierteam/pyterrier_colbert)) available for standard corpora via PyTerrier, hosted on a publicly accessible website
+ - Indices are versioned, and are verifiably correct, e.g. through md5sums
+ - PyTerrier code snippets are provided for insantiating different PyTerrier retrieval pipelines
+ - There are notebooks demonstrating retrieval effectiveness of using these pre-built indices can be made available, with pre-populated results
 
-## Usage:
+## Accessing a prebuilt index
+
+Different PyTerrier retrieval transformers can intantiated via a `from_dataset()` function. If necsssary, this downloads and verifies the index from http://data.terrier.org.
+
+```python
+name='msmarco-passage'
+variant='stemmed'
+br = pt.BatchRetrieve.from_dataset(name, variant)
+#or equivalently
+br = pt.BatchRetrieve(pt.get_dataset(name).get_index(variant=variant))
+```
+
+## Building an Index
 
 Initial operated through a Makefile,  specifying the dataset name:
 
@@ -31,19 +43,7 @@ data.inverted.bf                data.lexicon.fsomapid           data.properties
 ```
 
 
-## Accessing a prebuilt index.
-
-This is planned to become as easy as:
-```python
-name='msmarco-passage'
-variant='stemmed'
-br = pt.BatchRetrieve.from_dataset(name, variant)
-#or equivalently
-br = pt.BatchRetrieve(pt.get_dataset(name).get_index(variant=variant))
-
-```
-
-
 ## Credits
 
  - Craig Macdonald, University of Glasgow
+ - Sean MacAvaney, University of Glasgow
