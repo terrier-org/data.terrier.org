@@ -30,7 +30,10 @@ def get_retrieval_head(dataset : str, variant : str) -> str:
     return None
     
 def get_variant_description(variant : str) -> str:
-    return "Terrier index using DeepCT. Porter stemming and stopword removal applied"
+    return """
+Terrier index using DeepCT. Porter stemming and stopword removal applied. This index was made using the MSMARCO files 
+provided linked from the [authors' original repository](https://github.com/AdeDZY/DeepCT).
+To create indices for other corpora, use the [pyterrier_deepct plugin](https://github.com/terrierteam/pyterrier_deepct)."""
 
 def get_retrieval_pipelines(dataset : str, variant : str) -> str:
     return [
