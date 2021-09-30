@@ -1,11 +1,11 @@
 def get_thing(dataset : str, variant : str, name : str):
     import importlib, os
-    module_name = "pyterrier_prebuilt.%s.%s" % (dataset, variant)
+    module_name = "pyterrier_prebuilt.%s.%s" % (dataset.replace("-", "_"), variant)
     kwargs={}
     try:
         module = importlib.import_module(module_name)
     except ImportError:
-        module_name = "pyterrier_prebuilt.%s" % (dataset)
+        module_name = "pyterrier_prebuilt.%s" % (dataset.replace("-", "_"))
         module = importlib.import_module(module_name)
         kwargs['variant'] = variant
     if hasattr(module, name):

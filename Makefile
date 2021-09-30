@@ -42,5 +42,18 @@ msmarcov2_document:
 	${PYTHON} index.py msmarcov2_document terrier_unstemmed_positions ${DESTDIR}
 	${PYTHON} promote_index.py msmarcov2_document ${DATE} ${DESTDIR}
 
+trec-covid:
+	${PYTHON} index.py trec-covid terrier_stemmed ${DESTDIR}
+	${PYTHON} index.py trec-covid terrier_unstemmed ${DESTDIR}
+	${PYTHON} index.py trec-covid terrier_stemmed_text ${DESTDIR}
+	${PYTHON} index.py trec-covid terrier_unstemmed_text ${DESTDIR}
+	${PYTHON} index.py trec-covid terrier_stemmed_positions ${DESTDIR}
+	${PYTHON} index.py trec-covid terrier_unstemmed_positions ${DESTDIR}
+	${PYTHON} index.py trec-covid terrier_stemmed_doct5query ${DESTDIR}
+	${PYTHON} index.py trec-covid terrier_stemmed_doct5query_text ${DESTDIR}
+	${PYTHON} promote_index.py trec-covid ${DATE} ${DESTDIR}
+	${PYTHON} retrieval_nbs.py indices trec-covid terrier_stemmed terrier_unstemmed
+	PYTERRIER_HOME=${PWD}/pyt_home/ ${NBCONVERT} --to notebook --execute  ${DESTDIR}/trec-covid/retrieval.ipynb
+
 docs:
 	${PYTHON} docs.py
