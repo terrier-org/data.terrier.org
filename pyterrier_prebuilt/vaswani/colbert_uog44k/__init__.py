@@ -12,7 +12,7 @@ def index(dest_dir, variant=None):
 
     indexer = ColBERTIndexer(checkpoint, os.path.dirname(dest_dir),os.path.basename(dest_dir), chunksize=3, gpu=False)
     indexer.index(dataset)
-    with open(os.path.join(dest_dir, 'ColBERTFactory.args.json'), 'wt') as argsfile:
+    with open(os.path.join(dest_dir, '_ColBERTFactoryconstruct.args.json'), 'wt') as argsfile:
         kwargs = {
             'colbert_model' : checkpoint,
             'faiss_partitions': 100
@@ -20,7 +20,7 @@ def index(dest_dir, variant=None):
         argsfile.write(json.dumps(kwargs))
 
 def get_variant_description(variant : str) -> str:
-    return "ColBERT dense retrieval index using model trained by UoG for TREC 2020 DL track. Uses the pyterrier_colbert plugin."
+    return "ColBERT dense retrieval index using model trained by UoG for TREC 2020 DL track. Uses the [pyterrier_colbert](https://github.com/terrierteam/pyterrier_colbert) plugin."
 
 def get_retrieval_head(dataset : str, variant : str) -> str:
     return ['#!pip install --upgrade git+https://github.com/terrierteam/pyterrier_colbert.git', 'from pyterrier_colbert.ranking import ColBERTFactory']

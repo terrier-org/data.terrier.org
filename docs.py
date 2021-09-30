@@ -4,6 +4,7 @@ from pygments.lexers import PythonLexer
 from pygments.formatters import HtmlFormatter
 import sys
 import os
+import markdown
 
 INDEX_DIR="./indices/"
 
@@ -69,6 +70,7 @@ if __name__ == "__main__":
 		print("Dataset %s" % d)
 		meta = pb.get_thing(d, "bla", "DOC_INFO")
 		meta["name"] = d
+		meta["desc"] = markdown.markdown(meta["desc"])
 		config["datasets"].append(meta)
 		variants = pb.get_variants(d, INDEX_DIR)
 		meta["variants"] = []
@@ -82,7 +84,7 @@ if __name__ == "__main__":
 			print("Variant %s" % v)
 			vmeta = {
 				"name" : v,
-				"desc" : pb.get_thing(d, v, 'get_variant_description')(v),
+				"desc" : markdown.markdown(pb.get_thing(d, v, 'get_variant_description')(v)),
 				"pipes_header" : pb.get_thing(d, v, 'get_retrieval_head')(d,v),
 				"pipes" : pb.get_thing(d, v, 'get_retrieval_pipelines')(d,v)
 			}

@@ -2,3 +2,4 @@ nbformat
 nbconvert
 staticjinja
 pygments
+markdown

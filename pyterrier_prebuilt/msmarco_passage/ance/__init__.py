@@ -5,7 +5,7 @@ def index(dest_dir, variant=None):
     import pyterrier as pt
     import os
     import json
-    dataset = pt.get_dataset("vaswani").get_corpus_iter()
+    dataset = pt.get_dataset('irds:msmarco-passage').get_corpus_iter()
 
     from pyterrier_ance import ANCEIndexer
     checkpoint="https://webdatamltrainingdiag842.blob.core.windows.net/semistructstore/OpenSource/Passage_ANCE_FirstP_Checkpoint.zip"
