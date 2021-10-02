@@ -1,4 +1,4 @@
-
+from pyterrier.measures import *
 VBERT = "onir_pt.reranker('hgf4_joint', ranker_config={'model': 'Capreolus/bert-base-msmarco', 'norm': 'softmax-2'}"
 DOC_INFO = {
     "friendlyname" : "MSMARCO v2 Passage Ranking",
@@ -6,11 +6,11 @@ DOC_INFO = {
 }
 
 TOPICS_QRELS = [
-     {
+    {
         "name" : "dev1",
         "desc" : "4,552 topics with sparse judgements",
         "location" : ("msmarcov2_passage", "dev1"),
-        "metrics" : ["recip_rank"],
+        "metrics" : [RR@10],
     },
 ]
 INDEXER_KWARGS={'overwrite' : True}
@@ -39,10 +39,15 @@ def index(dest_dir, variant='terrier_stemmed'):
     
 def get_variant_description(variant : str) -> str:
     import pyterrier_prebuilt as pb
-    return pb.get_default_variant_description(variant)
+    return pb.get_default_variant_description(variant) 
 
 def get_retrieval_head(dataset : str, variant : str) -> str:
-    return None
+    return [
+            '#!pip install git+https://github.com/Georgetown-IR-Lab/OpenNIR.git',
+            'import onir_pt',
+            '# Lets use a Vanilla BERT ranker from OpenNIR. We\'ll use the Capreolus model available from Huggingface',
+            'vanilla_bert = %s' % VBERT
+        ]
 
 def get_retrieval_pipelines(dataset : str, variant : str) -> str:
     return [

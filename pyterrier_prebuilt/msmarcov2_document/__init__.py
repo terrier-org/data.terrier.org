@@ -1,4 +1,4 @@
-
+from pyterrier.measures import *
 VBERT = "onir_pt.reranker('hgf4_joint', ranker_config={'model': 'Capreolus/bert-base-msmarco', 'norm': 'softmax-2'}"
 SLIDING = "pt.text.sliding(length=128, stride=64, prepend_attr='title')"
 DOC_INFO = {
@@ -11,19 +11,19 @@ TOPICS_QRELS = [
         "name" : "valid1",
         "desc" : "43 topics used in the TREC 2019 Deep Learning track, with deep judgements",
         "location" : ("msmarcov2_document", "valid1"),
-        "metrics" : ["ndcg_cut_10"], #TODO insert pyterrier.measures
+        "metrics" : [RR, nDCG@10, nDCG@100, AP],
     },
     {
         "name" : "valid2",
         "desc" : "54 topics used in the TREC 2020 Deep Learning track, with deep judgements",
         "location" : ("msmarcov2_document", "valid2"),
-        "metrics" : ["ndcg_cut_10"], #TODO insert pyterrier.measures
+        "metrics" : [RR, nDCG@10, nDCG@100, AP],
     },
     {
         "name" : "dev1",
         "desc" : "4,552 topics with sparse judgements",
         "location" : ("msmarcov2_document", "dev1"),
-        "metrics" : ["recip_rank"],
+        "metrics" : [RR@10],
     },
 ]
 
