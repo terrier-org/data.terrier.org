@@ -56,7 +56,7 @@ dataset = pt.get_dataset('%s')
             # syscells.append("  %s = %s" % (varname, expression))
             # syscells.append("except JavaException as ja:")
             # syscells.append('  raise ValueError("\\n\\t".join(ja.stacktrace))')
-            syscells.append("%s = %s" % (varname, expression))
+            syscells.append("%s = %s" % (varname, pb.format_pipeline(expression)))
             syscells.append("")
 
             # keep track of names and variable names
@@ -81,10 +81,10 @@ dataset = pt.get_dataset('%s')
         
         topics_dataset = queryset.get("location", [dataset] )[0]
         topics_variant = queryset.get("location", ["bla", None] )[1:]
-        if len(topics_variant) == 1:
+        if topics_variant is not None and len(topics_variant) == 1:
             topics_variant = topics_variant[0]
             qrels_variant = topics_variant
-        if len(topics_variant) == 2:
+        if topics_variant is not None and len(topics_variant) == 2:
             topics_variant, qrels_variant = topics_variant
 
         if topics_variant is None:

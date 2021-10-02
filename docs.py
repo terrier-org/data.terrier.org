@@ -5,6 +5,7 @@ from pygments.formatters import HtmlFormatter
 import sys
 import os
 import markdown
+import pyterrier_prebuilt as pb
 
 INDEX_DIR="./indices/"
 
@@ -23,15 +24,6 @@ class PythonFunctionLexer(PythonLexer):
 
 def python_pprint(code):
 	return highlight(code, PythonFunctionLexer(ensurenl=False), HtmlFormatter(nowrap=True)).replace('\n', '<br/>')
-
-def format_pipes(code):
-	# For pipelines that use the then operator >>, show each stage on a new line.
-	# (Note, this may not look nice if there's a >> within a sub-pipeline)
-	if '>>' not in code:
-		return code
-	pipes = code.split('>>')
-	pipes = '\n    >>'.join(pipes)
-	return f'(\n    {pipes})'
 
 def sizeof_fmt(num, suffix='B'):
     for unit in ['','K','M','G','T','P','E','Z']:
@@ -102,7 +94,7 @@ if __name__ == "__main__":
 			vmeta['example'] = python_pprint('\n\n'.join(
 				vmeta["pipes_header"]
 				+
-				[f'{l} = {format_pipes(r)}' for l, r in vmeta['pipes']]
+				[f'{l} = {pb.format_pipeline(r)}' for l, r in vmeta['pipes']]
 				))
 			vmeta["lastupdate"] = variant_date(d, v)
 			vmeta["size"] = variant_size(d, v)
