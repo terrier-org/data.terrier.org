@@ -81,7 +81,7 @@ if __name__ == "__main__":
 		meta["notebook_present"] = os.path.exists(notebook_loc)
 		print("Notebook found at %s: %s" % (notebook_loc, meta["notebook_present"]))
 
-		for v in variants:
+		for v in sorted(variants, key=lambda x: (not x.startswith('terrier'), x)):
 			print("Variant %s" % v)
 			vmeta = {
 				"name" : v,
