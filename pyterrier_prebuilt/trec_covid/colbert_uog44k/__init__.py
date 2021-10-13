@@ -20,7 +20,7 @@ def index(dest_dir, variant=None):
         argsfile.write(json.dumps(kwargs))
 
 def get_variant_description(variant : str) -> str:
-    return "ColBERT dense retrieval index using model trained by UoG for TREC 2020 DL track. Uses the [pyterrier_colbert](https://github.com/terrierteam/pyterrier_colbert) plugin." \
+    return "ColBERT dense retrieval index using model trained by UoG for TREC 2020 DL track. Uses the [pyterrier_colbert](https://github.com/terrierteam/pyterrier_colbert) plugin. " \
            "Since most documents exceed the maximum length supported by ColBERT, a sliding window of 150 tokens was used (stride 75, prepending title) to construct passages. As such, " \
            "passage scores need to be aggregated, e.g., using pt.text.max_passage()."
 
