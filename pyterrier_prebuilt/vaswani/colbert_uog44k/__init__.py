@@ -28,6 +28,6 @@ def get_retrieval_head(dataset : str, variant : str) -> str:
 def get_retrieval_pipelines(dataset : str, variant : str) -> List[str]:
     return [
         ( "colbert_e2e", "ColBERTFactory.from_dataset('%s', '%s').end_to_end()" % (dataset, variant) ),
-        ( "colbert_prf_rank", "ColBERTFactory.from_dataset('%s', '%s').colbert_prf(rerank=False)" % (dataset, variant) ),
-        ( "colbert_prf_rerank", "ColBERTFactory.from_dataset('%s', '%s').colbert_prf(rerank=True)" % (dataset, variant) ),
+        ( "colbert_prf_rank", "ColBERTFactory.from_dataset('%s', '%s').prf(rerank=False)" % (dataset, variant) ),
+        ( "colbert_prf_rerank", "ColBERTFactory.from_dataset('%s', '%s').prf(rerank=True)" % (dataset, variant) ),
     ]
