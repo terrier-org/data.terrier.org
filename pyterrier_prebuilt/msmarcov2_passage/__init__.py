@@ -1,5 +1,5 @@
 from pyterrier.measures import *
-VBERT = "onir_pt.reranker('hgf4_joint', ranker_config={'model': 'Capreolus/bert-base-msmarco', 'norm': 'softmax-2'}"
+VBERT = "onir_pt.reranker('hgf4_joint', ranker_config={'model': 'Capreolus/bert-base-msmarco', 'norm': 'softmax-2'})"
 DOC_INFO = {
     "friendlyname" : "MSMARCO v2 Passage Ranking",
     "desc" : "A revised corpus of 138M passages released by Microsoft in July 2021, which should be ranked based on their relevance to questions.  Also used by the TREC 2021 Deep Learning track."
@@ -52,8 +52,8 @@ def get_retrieval_head(dataset : str, variant : str) -> str:
 def get_retrieval_pipelines(dataset : str, variant : str) -> str:
     return [
         ( "bm25_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='BM25')" % (dataset, variant) ),
-        ( "bm25_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s') >> pt.text.get_text(%s) >> %s" % (dataset, variant, 'irds:msmarco-passage-v2', VBERT)  ),
+        ( "bm25_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s') >> pt.text.get_text(%s, 'text') >> %s" % (dataset, variant, "pt.get_dataset('irds:msmarco-passage-v2')", VBERT)  ),
         ( "dph_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s', wmodel='DPH')" % (dataset, variant) ),
-        ( "dph_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s',  wmodel='DPH') >> pt.text.get_text(%s) >> %s" % (dataset, variant, 'irds:msmarco-passage-v2', VBERT)  )
+        ( "dph_bert_" + variant, "pt.BatchRetrieve.from_dataset('%s', '%s',  wmodel='DPH') >> pt.text.get_text(%s, 'text') >> %s" % (dataset, variant, "pt.get_dataset('irds:msmarco-passage-v2')", VBERT)  )
 
     ]
