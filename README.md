@@ -1,4 +1,4 @@
-# pyterrier_prebuilt
+# data.terrier.org
 
 This repository contains the source code for the (Py)Terrier Data Repository - http://data.terrier.org.
 
